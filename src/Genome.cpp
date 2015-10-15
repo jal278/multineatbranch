@@ -1316,6 +1316,9 @@ bool Genome::Mutate_AddNeuron(InnovationDatabase &a_Innovs, Parameters& a_Parame
 
     // remove the link from the genome
     // find it first and then erase it
+    bool deleteOld=false;
+
+    if(deleteOld) {
     std::vector<LinkGene>::iterator t_iter;
     for(t_iter = m_LinkGenes.begin(); t_iter != m_LinkGenes.end(); t_iter++)
     {
@@ -1326,6 +1329,7 @@ bool Genome::Mutate_AddNeuron(InnovationDatabase &a_Innovs, Parameters& a_Parame
             break;
         }
     }
+   }
 
     // Check if an innovation of this type already occured somewhere in the population
     int t_innovid = a_Innovs.CheckInnovation(t_in, t_out, NEW_NEURON);
@@ -1382,7 +1386,7 @@ bool Genome::Mutate_AddNeuron(InnovationDatabase &a_Innovs, Parameters& a_Parame
         m_LinkGenes.push_back( LinkGene(t_in, t_nid, t_l1id, 1.0, t_recurrentflag) );
 
         // Second link
-        m_LinkGenes.push_back( LinkGene(t_nid, t_out, t_l2id, t_orig_weight, t_recurrentflag) );
+        m_LinkGenes.push_back( LinkGene(t_nid, t_out, t_l2id, t_orig_weight / 1.0, t_recurrentflag) );
     }
     else
     {

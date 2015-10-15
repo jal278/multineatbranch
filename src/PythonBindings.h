@@ -39,16 +39,17 @@
 #include "Species.h"
 #include "Parameters.h"
 #include "Random.h"
+#include <numpy/ndarrayobject.h>
 
 namespace py = boost::python;
 using namespace NEAT;
 using namespace py;
 
+extern void import_array_wrapper();
 
 BOOST_PYTHON_MODULE(_MultiNEAT)
 {
     numeric::array::set_module_and_type("numpy", "ndarray");
-
 ///////////////////////////////////////////////////////////////////
 // Enums
 ///////////////////////////////////////////////////////////////////
@@ -182,6 +183,8 @@ BOOST_PYTHON_MODULE(_MultiNEAT)
             NN_Input)
             .def("Input",
             NN_Input_numpy)
+            .def("Batch_input",
+            &NeuralNetwork::Batch_input)
             .def("Output",
             &NeuralNetwork::Output)
             
@@ -206,6 +209,7 @@ BOOST_PYTHON_MODULE(_MultiNEAT)
 ///////////////////////////////////////////////////////////////////
 
     def("GetRandomActivation", &GetRandomActivation);
+    def("import_array", &import_array_wrapper);
 
     class_<Genome, Genome*>("Genome", init<>())
 
@@ -214,6 +218,8 @@ BOOST_PYTHON_MODULE(_MultiNEAT)
                     bool, ActivationFunction, ActivationFunction, int, Parameters>())
 	        .def(init<unsigned int, unsigned int, unsigned int,
                     bool, ActivationFunction, ActivationFunction, Parameters>())
+            .def(init<const Genome&>())
+            .def("Destroy",&Genome::Destroy)
             .def("NumNeurons", &Genome::NumNeurons)
             .def("NumLinks", &Genome::NumLinks)
             .def("NumInputs", &Genome::NumInputs)
@@ -254,6 +260,7 @@ BOOST_PYTHON_MODULE(_MultiNEAT)
             .def("GetLeader", &Species::GetLeader)
             .def("NumIndividuals", &Species::NumIndividuals)
             .def("GensNoImprovement", &Species::GensNoImprovement)
+            .def("MutateGenome",&Species::MutateGenome)
             .def("ID", &Species::ID)
             .def("Age", &Species::Age)
             .def("IsBestSpecies", &Species::IsBestSpecies)

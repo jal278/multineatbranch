@@ -6,3 +6,9 @@
  */
 
 #include "PythonBindings.h"
+
+
+void import_array_wrapper() {
+ _import_array();
+ std::cout << "IMPORT..." << std::endl;
+}

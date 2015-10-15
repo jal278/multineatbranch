@@ -196,6 +196,10 @@ public:
     ////////////////////////////
     // Destructor
     ////////////////////////////
+    void Destroy() {
+     delete this;
+    }
+
     void SetPerformance(double perf)
     {
         Performance = perf;

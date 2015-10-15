@@ -619,6 +619,71 @@ void NeuralNetwork::Input_python_list(py::list& a_Inputs)
     Input(inp);
 }
 
+bp::object NeuralNetwork::Batch_input(py::numeric::array& a_Inputs,int depth) 
+{
+
+ vector<double> accum;
+ vector<double> temp_out;
+ int len = py::len(a_Inputs); //a_Inputs.shape(0);
+ accum.reserve(len*m_num_outputs);
+ _import_array();  //weird...
+ for (int x=0;x<len;x++) {
+  //std::cout << x <<std::endl;
+  py::numeric::array cur_i = py::extract<py::numeric::array>(a_Inputs[x]);
+
+  Flush();  
+  Input_numpy(cur_i);
+
+  for (int _d=0;_d<depth;_d++)
+   Activate();
+
+   temp_out = Output();
+   accum.insert(accum.end(),temp_out.begin(),temp_out.end());   
+
+ }
+
+ npy_intp size[2] = {len,m_num_outputs};
+ //std::cout << "size: " << accum.size() << std::endl; 
+ //std::cout << "size2: " << len << " " << m_num_outputs << std::endl; 
+ double * data = const_cast<double *>(accum.data());
+    // create a PyObject * from pointer and data 
+      PyObject * pyObj = PyArray_SimpleNewFromData( 2, size, NPY_DOUBLE, data );
+ //std::cout << "Welp.."<<std::endl;
+      boost::python::handle<> handle( pyObj );
+      boost::python::numeric::array arr( handle );
+    /* The problem of returning arr is twofold: firstly the user can modify
+      the data which will betray the const-correctness 
+      Secondly the lifetime of the data is managed by the C++ API and not the 
+      lifetime of the numpy array whatsoever. But we have a simple solution..
+     */
+ //std::cout << "Returning copy..." <<std::endl;
+
+       return arr.copy();  
+
+}
+
+
+void NeuralNetwork::Input_numpy2(bn::ndarray const & a_Inputs,int row)
+{
+    Py_intptr_t const * strides = a_Inputs.get_strides();
+
+    int len = a_Inputs.shape(1);
+    std::cout << "a len: " << std::endl;
+    std::vector<double> inp;
+    inp.resize(len);
+    for(int i=0; i<len; i++) {
+        std::cout << "r: " << i << std::endl;
+        inp[i] =  *reinterpret_cast<double const *>(a_Inputs.get_data() + row * strides[0] + i * strides[1]); 
+    }
+
+    // if the number of passed inputs differs from the actual number of inputs,
+    // clip them to fit.
+    if (inp.size() != m_num_inputs)
+        inp.resize(m_num_inputs);
+
+    Input(inp);
+}
+
 void NeuralNetwork::Input_numpy(py::numeric::array& a_Inputs)
 {
     int len = py::len(a_Inputs);
