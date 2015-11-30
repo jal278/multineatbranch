@@ -43,8 +43,7 @@
 #include <cmath>
 #include <numpy/ndarrayobject.h>
 
-
-#include <boost/numpy.hpp>
+//#include <boost/numpy.hpp>
 #include <cmath>
 #include <memory>
 #ifndef M_PI
@@ -52,7 +51,7 @@
 const double M_PI = boost::math::constants::pi<double>();
 #endif
 namespace bp = boost::python;
-namespace bn = boost::numpy;
+//namespace bn = boost::numpy;
 
 
 namespace py = boost::python;
@@ -173,7 +172,7 @@ public:
 
 #ifdef USE_BOOST_PYTHON
     bp::object Batch_input(py::numeric::array& a_Inputs,int depth);
-    void Input_numpy2(bn::ndarray const & a_Inputs,int row);
+    //void Input_numpy2(bn::ndarray const & a_Inputs,int row);
     void Input_python_list(py::list& a_Inputs);
     void Input_numpy(py::numeric::array& a_Inputs);
 

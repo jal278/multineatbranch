@@ -239,7 +239,7 @@ BOOST_PYTHON_MODULE(_MultiNEAT)
             .def("IsEvaluated", &Genome::IsEvaluated)
             .def("SetEvaluated", &Genome::SetEvaluated)
             .def("ResetEvaluated", &Genome::ResetEvaluated)
-
+            .def("RandomizeParameters",&Genome::RandomizeParameters)
             .def("Save", Genome_Save)
 
 	          .def("Build_ES_Phenotype", &Genome::Build_ES_Phenotype)

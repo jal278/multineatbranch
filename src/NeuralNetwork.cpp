@@ -663,27 +663,6 @@ bp::object NeuralNetwork::Batch_input(py::numeric::array& a_Inputs,int depth)
 }
 
 
-void NeuralNetwork::Input_numpy2(bn::ndarray const & a_Inputs,int row)
-{
-    Py_intptr_t const * strides = a_Inputs.get_strides();
-
-    int len = a_Inputs.shape(1);
-    std::cout << "a len: " << std::endl;
-    std::vector<double> inp;
-    inp.resize(len);
-    for(int i=0; i<len; i++) {
-        std::cout << "r: " << i << std::endl;
-        inp[i] =  *reinterpret_cast<double const *>(a_Inputs.get_data() + row * strides[0] + i * strides[1]); 
-    }
-
-    // if the number of passed inputs differs from the actual number of inputs,
-    // clip them to fit.
-    if (inp.size() != m_num_inputs)
-        inp.resize(m_num_inputs);
-
-    Input(inp);
-}
-
 void NeuralNetwork::Input_numpy(py::numeric::array& a_Inputs)
 {
     int len = py::len(a_Inputs);

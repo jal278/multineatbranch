@@ -121,6 +121,15 @@ Genome& Genome::operator =(const Genome& a_G)
     return *this;
 }
 
+void Genome::RandomizeParameters(RNG& a_RNG) {
+
+    for(unsigned int i=0; i < 6; i++)
+    {
+        m_NeuronGenes[i].m_TimeConstant=a_RNG.RandFloat();
+        m_NeuronGenes[i].m_Bias=a_RNG.RandFloat();
+    }
+}
+
 Genome::Genome(unsigned int a_ID,
                unsigned int a_NumInputs,
                unsigned int a_NumHidden, // ignored for seed type == 0, specifies number of hidden units if seed type == 1
@@ -1316,7 +1325,7 @@ bool Genome::Mutate_AddNeuron(InnovationDatabase &a_Innovs, Parameters& a_Parame
 
     // remove the link from the genome
     // find it first and then erase it
-    bool deleteOld=false;
+    bool deleteOld=true;
 
     if(deleteOld) {
     std::vector<LinkGene>::iterator t_iter;
@@ -1351,7 +1360,7 @@ bool Genome::Mutate_AddNeuron(InnovationDatabase &a_Innovs, Parameters& a_Parame
 
         // Adjust the SplitY
         double t_sy = m_NeuronGenes[ GetNeuronIndex(t_in) ].SplitY() + m_NeuronGenes[ GetNeuronIndex(t_out) ].SplitY();
-        t_sy /= 2.0;
+        //t_sy /= 2.0;
 
         // Create the neuron gene
         NeuronGene t_ngene(HIDDEN, t_nid, t_sy);
@@ -2256,7 +2265,7 @@ void Genome::Mutate_NeuronTimeConstants(Parameters& a_Parameters, RNG& a_RNG)
     for(unsigned int i=0; i<NumNeurons(); i++)
     {
         // skip inputs and bias
-        if ((m_NeuronGenes[i].Type() != INPUT) && (m_NeuronGenes[i].Type() != BIAS))
+        if (true) //((m_NeuronGenes[i].Type() != INPUT) && (m_NeuronGenes[i].Type() != BIAS))
         {
             double t_randnum = a_RNG.RandFloatClamped() * a_Parameters.TimeConstantMutationMaxPower;
 
@@ -2274,7 +2283,7 @@ void Genome::Mutate_NeuronBiases(Parameters& a_Parameters, RNG& a_RNG)
     for(unsigned int i=0; i<NumNeurons(); i++)
     {
         // skip inputs and bias
-        if ((m_NeuronGenes[i].Type() != INPUT) && (m_NeuronGenes[i].Type() != BIAS))
+        if (true)  //((m_NeuronGenes[i].Type() != INPUT) && (m_NeuronGenes[i].Type() != BIAS))
         {
             double t_randnum = a_RNG.RandFloatClamped() * a_Parameters.BiasMutationMaxPower;
 
@@ -2670,11 +2679,11 @@ unsigned int Genome::NeuronDepth(unsigned int a_NeuronID, unsigned int a_Depth)
     unsigned int t_current_depth;
     unsigned int t_max_depth = a_Depth;
 
-    if (a_Depth > 16)
+    if (a_Depth > 10)
     {
         // oops! a loop in the network!
         //std::cout << std::endl << " ERROR! Trying to get the depth of a looped network!" << std::endl;
-        return 16;
+        return 10;
     }
 
     // Base case

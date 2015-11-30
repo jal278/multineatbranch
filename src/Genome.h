@@ -109,6 +109,7 @@ private:
     // Returns true if the specified link is present in the genome
     bool HasLinkByInnovID(unsigned int a_id) const;
 
+
     // Removes the link with the specified innovation ID
     void RemoveLinkGene(unsigned int a_innovid);
 
@@ -130,6 +131,8 @@ private:
 
 public:
 
+    // Randomize the neurongene parameters we've hijacked to encode lighting 
+    void RandomizeParameters(RNG& arng);
     // tells whether this genome was evaluated already
     // used in steady state evolution
     bool m_Evaluated;
