@@ -1,7 +1,7 @@
 import time
 from _MultiNEAT import *
 
-from concurrent.futures import ProcessPoolExecutor, as_completed
+#from concurrent.futures import ProcessPoolExecutor, as_completed
 import matplotlib.pyplot as plt
 from numpy import array, clip
 
