@@ -57,8 +57,8 @@ except Exception as ex:
                                                 'src/Substrate.cpp',
                                                 'src/Utils.cpp'],
                                  libraries=[lb,
-                                            'boost_serialization',
-					    'boost_numpy'],
+                                            'boost_serialization',],
+					    #'boost_numpy'],
                                             
                                  # for Windows                                 
                                  #libraries=[],
