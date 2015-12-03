@@ -57,8 +57,8 @@ except Exception as ex:
                                                 'src/Substrate.cpp',
                                                 'src/Utils.cpp'],
                                  libraries=[lb,
-                                            'boost_serialization',
-					    'boost_numpy'],
+                                            'boost_serialization',],
+					    #'boost_numpy'],
                                             
                                  # for Windows                                 
                                  #libraries=[],
@@ -71,6 +71,7 @@ except Exception as ex:
                                                      '-DUSE_BOOST_RANDOM', 
                                                     '-std=gnu++11',
                                                     '-g',
-                                                    '-Wall'
+                                                    '-Wall',
+"-I/usr/local/lib/python2.7/dist-packages/numpy/core/include/"
                                                      ])
                        ])
