@@ -145,6 +145,8 @@ Genome Species::GetIndividual(Parameters& a_Parameters, RNG& a_RNG) const
         int t_num_parents = static_cast<int>( floor((a_Parameters.SurvivalRate * (static_cast<double>(t_Evaluated.size())))+1.0));
        
         ASSERT(t_num_parents>0);
+        if (t_num_parents>=t_Evaluated.size())
+          t_num_parents = t_Evaluated.size()-1;
         t_chosen_one = a_RNG.RandInt(0, t_num_parents);
         for (unsigned int i = 0; i < a_Parameters.TournamentSize; i++)
         {
